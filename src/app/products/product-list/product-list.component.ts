@@ -107,7 +107,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
           startWith(""),
           distinctUntilChanged(),
           tap(term => { 
-            console.warn(term);
+          //  console.warn(term);
             this.firstPage();
             this.filtered = term.length > 0 ? true : false;
            })
