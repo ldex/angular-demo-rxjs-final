@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Observable, EMPTY, combineLatest, Subscription } from 'rxjs';
-import { tap, catchError, startWith, count, flatMap, map, debounceTime, filter, share } from 'rxjs/operators';
+import { tap, catchError, startWith, count, flatMap, map, debounceTime, filter, share, distinctUntilChanged } from 'rxjs/operators';
 
 import { Product } from '../product.interface';
 import { ProductService } from '../product.service';
@@ -101,10 +101,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
         .filter
         .valueChanges
         .pipe(
+          map(text => text.trim()),
+          filter(text => text == '' || text.length > 2),
           debounceTime(500),
           startWith(""),
+          distinctUntilChanged(),
           tap(term => { 
-           // console.warn(term);
+            console.warn(term);
             this.firstPage();
             this.filtered = term.length > 0 ? true : false;
            })
