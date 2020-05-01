@@ -13,15 +13,12 @@ import { FavouriteService } from '../favourite.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
 
   title: string = 'Products';
   selectedProduct: Product;
   errorMessage;
   filter: FormControl = new FormControl("");
-  filtered: boolean = false;
-  message: string;
-  subscription: Subscription = new Subscription();
 
   // Pagination
   pageSize = 5;
@@ -63,30 +60,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private router: Router) {
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-    this
-      .subscription
-      .add(
-        this
-          .favouriteService
-          .addedFavourite$
-          .pipe(
-            filter(product => product != null),
-            tap(console.log)
-          )
-          .subscribe(
-            product => this.message = "Product " + product.name + " added to favourites!" 
-          )
-      );
-
-      this.favouriteService.resetAddedFavourite();
   }
+
+  message$ = this
+    .favouriteService
+    .addedFavourite$
+    .pipe(
+      filter(product => product != null),
+      tap(console.log),
+      map(product => `Product ${product.name} added to favourites!`),
+      tap(() => this.favouriteService.resetAddedFavourite())
+    );
 
   refresh() {
     this.productService.initProducts();
@@ -106,12 +92,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
           debounceTime(500),
           startWith(""),
           distinctUntilChanged(),
-          tap(term => { 
-          //  console.warn(term);
+          tap(term => {
             this.firstPage();
-            this.filtered = term.length > 0 ? true : false;
            })
         );
+
+  filtered$ = this
+              .filter$
+              .pipe(
+                map(text => text.length > 0)
+              );
 
   filteredProducts$ = combineLatest(this.products$, this.filter$)
         .pipe(

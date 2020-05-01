@@ -2,13 +2,13 @@
     {{ title }}
 </h2>
 
-<h3 *ngIf="message">
-    {{ message }}
+<h3>
+    {{ message$ | async }}
 </h3>
 
 
 <div class="right">
-    {{ productsNb$ | async }} products <span *ngIf="filtered">(filtered)</span> |
+    {{ productsNb$ | async }} products <span *ngIf="filtered$ | async">(filtered)</span> |
 
     {favourites, plural,
     =0 {no favourite}
