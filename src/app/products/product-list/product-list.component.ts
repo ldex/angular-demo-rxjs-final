@@ -103,7 +103,7 @@ export class ProductListComponent implements OnInit {
                 map(text => text.length > 0)
               );
 
-  filteredProducts$ = combineLatest(this.products$, this.filter$)
+  filteredProducts$ = combineLatest([this.products$, this.filter$])
         .pipe(
           map(([products, filterString]) =>
             products.filter(product => 
