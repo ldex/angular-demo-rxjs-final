@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product;
   errorMessage;
   filter: FormControl = new FormControl("");
+  favouriteAdded$: Observable<Product>;
 
   // Pagination
   pageSize = 5;
@@ -62,17 +63,15 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    
+    this.favouriteAdded$ = this
+    .favouriteService
+    .favouriteAdded$
+    .pipe(
+      tap(console.log)
+    );
   }
 
-  message$ = this
-    .favouriteService
-    .addedFavourite$
-    .pipe(
-      filter(product => product != null),
-      tap(console.log),
-      map(product => `Product ${product.name} added to favourites!`),
-      tap(() => this.favouriteService.resetAddedFavourite())
-    );
 
   refresh() {
     this.productService.initProducts();

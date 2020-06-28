@@ -2,8 +2,8 @@
     {{ title }}
 </h2>
 
-<h3>
-    {{ message$ | async }}
+<h3 *ngIf="favouriteAdded$ | async as product">
+    Product {{product.name}} added to your favourites!
 </h3>
 
 

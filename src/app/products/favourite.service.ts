@@ -10,21 +10,17 @@ export class FavouriteService {
 
   constructor() { }
 
-  private addedFavourite = new BehaviorSubject<Product>(null);
-  addedFavourite$: Observable<Product> = this.addedFavourite.asObservable();
-
+  private favouriteAdded = new BehaviorSubject<Product>(null);
+  favouriteAdded$: Observable<Product> = this.favouriteAdded.asObservable();
   private favourites: Set<Product> = new Set();
 
   addToFavourites(product: Product) {
     this.favourites.add(product);
-    this.addedFavourite.next(product);
+    this.favouriteAdded.next(product);
+    setTimeout(() => this.favouriteAdded.next(null), 2000);
   }
 
   getFavouritesNb(): number {
     return this.favourites.size;
-  }
-
-  resetAddedFavourite() {
-    this.addedFavourite.next(null);
   }
 }
