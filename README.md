@@ -26,5 +26,5 @@ The app is running on `http://localhost:4200/` and will automatically reload if 
 
 ## Try it live in Stackblitz without installation!
 
-<a href="https://stackblitz.com/github/ldex/angular-demo-rxjs-final" target="_blank">Angular Demo Full Project</a> 
+<a href="https://stackblitz.com/github/ldex/angular-demo-rxjs-final" target="_blank">Angular Demo RxJS Project</a> 
 
