@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Observable, EMPTY, combineLatest, Subscription } from 'rxjs';
 import { tap, catchError, startWith, count, flatMap, map, debounceTime, filter, share, distinctUntilChanged } from 'rxjs/operators';
+import { $D } from "rxjs-debug";
 
 import { Product } from '../product.interface';
 import { ProductService } from '../product.service';
@@ -42,9 +43,10 @@ export class ProductListComponent implements OnInit {
   }
 
   firstPage(): void {    
-     this.start = 0;   
-       this.end = this.pageSize; 
-           this.currentPage = 1;   } 
+    this.start = 0;   
+    this.end = this.pageSize; 
+    this.currentPage = 1;  
+  } 
 
   onSelect(product: Product) {
     this.selectedProduct = product;
@@ -102,19 +104,29 @@ export class ProductListComponent implements OnInit {
                 map(text => text.length > 0)
               );
 
-  filteredProducts$ = combineLatest([this.products$, this.filter$])
-        .pipe(
-          map(([products, filterString]) =>
-            products.filter(product => 
-              product.name.toLowerCase().includes(filterString.toLowerCase())
-            )
-          )
-        )
+  // filteredProducts$ = combineLatest([this.products$, this.filter$])
+  // .pipe(
+  //   map(([products, filterString]) =>
+  //     products.filter(product => 
+  //       product.name.toLowerCase().includes(filterString.toLowerCase())
+  //     )
+  //   )
+  // )
 
-    productsNb$ = this
-        .filteredProducts$
-        .pipe(
-          map(products => products.length),
-          startWith(0)
-        )
+  source$ = combineLatest([this.products$, this.filter$]);
+  debug$ = $D(this.source$, { id: "filteredProducts$" });
+  filteredProducts$ = this.debug$.pipe(
+    map(([products, filterString]) =>
+      products.filter(product => 
+        product.name.toLowerCase().includes(filterString.toLowerCase())
+      )
+    )
+  )
+
+  productsNb$ = this
+  .filteredProducts$
+  .pipe(
+    map(products => products.length),
+    startWith(0)
+  );
 }

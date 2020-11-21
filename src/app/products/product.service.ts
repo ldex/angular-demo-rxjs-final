@@ -20,13 +20,13 @@ export class ProductService {
     let url:string = this.baseUrl + `?$orderby=ModifiedDate%20desc`;
 
     this.products$ = this
-                      .http
-                      .get<Product[]>(url)
-                      .pipe(
-                        delay(1500),
-                     //   tap(console.table),
-                        shareReplay()
-                      );
+    .http
+    .get<Product[]>(url)
+    .pipe(
+      delay(1500),
+      // tap(console.table),
+      shareReplay()
+    );
   }
 
   insertProduct(newProduct: Product): Observable<Product> {
