@@ -1,6 +1,6 @@
-# Angular Academy Demo RxJS Start
+# Angular Academy Demo RxJS
 
-Starter Project for the RxJS demo of <a href="https://angular.ac" target="_blank">Angular Academy</a>.
+Demo Project for the RxJS part of an <a href="https://angular.ac" target="_blank">Angular Academy</a> workshop.
 
 [![Angular Academy](https://www.angularacademy.ca/images/classroom.jpg "Angular Academy")](https://www.angularacademy.ca)
 
@@ -33,7 +33,7 @@ Run `npm i`
 
 ### Run it locally
 
-Run `ng s -o --hmr` for a local dev server.
+Run `ng s -o` for a local dev server.
 
 The app is running on `http://localhost:4200/` and will automatically reload if you change/save any of the source files.
 

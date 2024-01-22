@@ -3,6 +3,7 @@
 </h2>
 
 <div class="right">
+  {{ productsNumber$ | async }} products displayed / {{productsTotalNumber$ | async}} total /
   {favourites, plural,
   =0 {no favourite}
   =1 {1 favourite}
@@ -32,6 +33,11 @@
 }
 
 <div class="right">
+  <span *ngIf="mostExpensiveProduct$ | async as mostExpensiveProduct">
+    Most expensive:
+    {{ mostExpensiveProduct?.name }}
+    {{ mostExpensiveProduct?.price | currency: "CAD":"symbol-narrow":".2" }}
+  </span>
   <button (click)="reset()">Reset List</button>&nbsp;
   <a routerLink="insert">Add new product...</a>
 </div>
@@ -42,7 +48,12 @@
     < Previous Page
   </button>
   Page {{ currentPage }}
-  <button (click)="nextPage()">
+  <button (click)="nextPage()" [disabled]="(productsNumber$ | async) <= end">
     Next Page >
   </button>
+  @if((productsNumber$ | async) <= end && (hasMoreProducts$ | async)) {
+    <button (click)="loadMore()">
+      Load {{productsToLoad}} more...
+    </button>
+  }
 </div>

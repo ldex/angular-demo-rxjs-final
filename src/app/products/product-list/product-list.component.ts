@@ -1,7 +1,19 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { Observable, EMPTY, combineLatest, Subscription, tap, catchError, startWith, count, map, debounceTime, filter } from 'rxjs';
+import {
+  Observable,
+  EMPTY,
+  combineLatest,
+  Subscription,
+  tap,
+  catchError,
+  startWith,
+  count,
+  map,
+  debounceTime,
+  filter,
+} from 'rxjs';
 
 import { Product } from '../product.interface';
 import { ProductService } from '../../services/product.service';
@@ -10,25 +22,43 @@ import { FavouriteService } from '../../services/favourite.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrl: './product-list.component.css',
 })
 export class ProductListComponent implements OnInit {
-
   title: string = 'Products';
   selectedProduct: Product;
   products$: Observable<Product[]>;
+  productsNumber$: Observable<number>;
+  productsTotalNumber$: Observable<number>;
+  mostExpensiveProduct$: Observable<Product>;
+  hasMoreProducts$: Observable<boolean>;
   errorMessage;
 
   constructor(
     private productService: ProductService,
     private favouriteService: FavouriteService,
-    private router: Router) {
-  }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.products$ = this
-                      .productService
-                      .products$;
+    this.products$ = this.productService.products$.pipe(
+      filter((products) => products.length > 0)
+    );
+
+    this.productsTotalNumber$ = this.productService.productsTotalNumber$.asObservable();
+    this.productsNumber$ = this.products$.pipe(
+      map((products) => products.length),
+      startWith(0)
+    );
+
+    this.hasMoreProducts$ = combineLatest([this.productsNumber$, this.productsTotalNumber$])
+    .pipe(
+      map(([productsNumber, productsTotalNumber]) =>
+        productsNumber < productsTotalNumber
+      )
+    );
+
+    this.mostExpensiveProduct$ = this.productService.mostExpensiveProduct$;
   }
 
   get favourites(): number {
@@ -36,10 +66,17 @@ export class ProductListComponent implements OnInit {
   }
 
   // Pagination
-  pageSize = 5;
+  productsToLoad = this.productService.productsToLoad;
+  pageSize = this.productsToLoad / 2;
   start = 0;
   end = this.pageSize;
   currentPage = 1;
+
+  loadMore() {
+    let skip = this.end;
+    let take = this.productsToLoad;
+    this.productService.initProducts(skip, take);
+  }
 
   previousPage() {
     this.start -= this.pageSize;
@@ -62,7 +99,7 @@ export class ProductListComponent implements OnInit {
 
   reset() {
     this.productService.resetList();
-    this.router.navigateByUrl('/products'); // self navigation to force data update
+    this.resetPagination();
   }
 
   resetPagination() {
