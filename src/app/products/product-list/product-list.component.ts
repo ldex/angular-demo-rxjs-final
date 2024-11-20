@@ -24,7 +24,6 @@ import { NgIf, AsyncPipe, UpperCasePipe, SlicePipe, CurrencyPipe } from '@angula
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.css',
-    standalone: true,
     imports: [
         NgIf,
         RouterLink,
@@ -32,7 +31,7 @@ import { NgIf, AsyncPipe, UpperCasePipe, SlicePipe, CurrencyPipe } from '@angula
         UpperCasePipe,
         SlicePipe,
         CurrencyPipe,
-    ],
+    ]
 })
 export class ProductListComponent implements OnInit {
   title: string = 'Products';

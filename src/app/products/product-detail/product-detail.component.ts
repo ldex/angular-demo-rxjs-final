@@ -11,7 +11,6 @@ import { NgIf, AsyncPipe, UpperCasePipe, CurrencyPipe, DatePipe } from '@angular
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css',
-    standalone: true,
     imports: [NgIf, AsyncPipe, UpperCasePipe, CurrencyPipe, DatePipe]
 })
 export class ProductDetailComponent {
