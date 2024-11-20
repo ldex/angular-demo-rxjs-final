@@ -3,13 +3,13 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 
 import { environment } from './environments/environment';
-import { RouteReuseStrategy } from '@angular/router';
+import { provideRouter, RouteReuseStrategy, withRouterConfig } from '@angular/router';
 import { CustomRouteReuseStrategy } from './app/custom-route-reuse-strategy';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 
 if (environment.production) {
   enableProdMode();
@@ -17,9 +17,13 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, FormsModule, AppRoutingModule),
+        importProvidersFrom(BrowserModule, FormsModule),
         { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        provideRouter(
+          routes,
+          withRouterConfig({ onSameUrlNavigation: "reload" })
+        ),
     ]
 })
   .catch(err => console.error(err));
