@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
+
 
 import { AppComponent } from './app.component';
 import { RouteReuseStrategy } from '@angular/router';
@@ -14,9 +14,8 @@ import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy';
         AppComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
-        FormsModule,
-        SharedModule,
-        AppRoutingModule], providers: [
+    FormsModule,
+    AppRoutingModule], providers: [
         { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
         provideHttpClient(withInterceptorsFromDi())
     ] })
