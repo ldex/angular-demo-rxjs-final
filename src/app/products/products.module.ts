@@ -9,17 +9,15 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductInsertComponent } from './product-insert/product-insert.component';
 
 @NgModule({
-  declarations: [
-    ProductDetailComponent,
-    ProductListComponent,
-    ProductInsertComponent
-  ],
-  exports: [ProductListComponent],
-  imports: [
-    CommonModule,
-    ProductsRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    exports: [ProductListComponent],
+    imports: [
+        CommonModule,
+        ProductsRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ProductDetailComponent,
+        ProductListComponent,
+        ProductInsertComponent
+    ]
 })
 export class ProductsModule { }

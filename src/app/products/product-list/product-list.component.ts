@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import {
   Observable,
@@ -18,11 +18,21 @@ import {
 import { Product } from '../product.interface';
 import { ProductService } from '../../services/product.service';
 import { FavouriteService } from '../../services/favourite.service';
+import { NgIf, AsyncPipe, UpperCasePipe, SlicePipe, CurrencyPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css',
+    selector: 'app-product-list',
+    templateUrl: './product-list.component.html',
+    styleUrl: './product-list.component.css',
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        AsyncPipe,
+        UpperCasePipe,
+        SlicePipe,
+        CurrencyPipe,
+    ],
 })
 export class ProductListComponent implements OnInit {
   title: string = 'Products';

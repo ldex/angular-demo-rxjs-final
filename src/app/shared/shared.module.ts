@@ -7,14 +7,12 @@ import { AdminComponent } from './admin.component';
 
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    ContactComponent,
-    ErrorComponent,
-    AdminComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        HomeComponent,
+        ContactComponent,
+        ErrorComponent,
+        AdminComponent
+    ]
 })
 export class SharedModule { }
