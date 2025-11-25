@@ -1,0 +1,54 @@
+<div class="right">
+  {{ productsNumber$ | async }} products,
+  {favourites, plural,
+  =0 {no favourite}
+  =1 {1 favourite}
+  other {{{favourites}} favourites}
+  }
+</div>
+<div>
+  <!-- Search: <input type="text" [formControl]="filter" placeholder="filter by name"> -->
+  &nbsp;
+</div>
+
+@if (products$ | async; as products) {
+<ul class="products">
+  @for (product of products | orderBy:['-modifiedDate'] | slice:start:end; track product.id) {
+  <li [class.discontinued]="product.discontinued" (click)="selectProduct(product)" [title]="product | json">
+    <span class="name">{{ product.name | uppercase }}</span>
+    <span class="description">{{ product.description }}</span>
+    <span class="price">{{ product.price | currency:'CAD':'symbol-narrow':'.2' }}</span>
+  </li>
+  }
+</ul>
+} @else {
+<div class="loading"></div>
+}
+
+<div class="right">
+  @if(mostExpensiveProduct$ | async; as mostExpensiveProduct) {
+  <span>
+    Most expensive:
+    {{ mostExpensiveProduct?.name }}
+    {{ mostExpensiveProduct?.price | currency }}
+  </span>
+  }
+  <button (click)="reload()">Reload List</button>&nbsp;
+  <a routerLink="create">Create new product...</a>
+</div>
+
+
+<div>
+  <button (click)="changePage(-1)" [disabled]="start == 0">
+    Previous Page
+  </button>
+  Page {{ pageNumber }}
+  <button (click)="changePage(1)" [disabled]="end >= (productsNumber$ | async)">
+    Next Page
+  </button>
+  @if (end >= (productsNumber$ | async)) {
+    <button (click)="loadMore()">
+      Load 10 more...
+    </button>
+  }
+</div>
