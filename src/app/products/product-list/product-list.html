@@ -13,7 +13,7 @@
 
 @if (products$ | async; as products) {
 <ul class="products">
-  @for (product of products | orderBy:['-modifiedDate'] | slice:start:end; track product.id) {
+  @for (product of products | slice:start:end; track product.id) {
   <li [class.discontinued]="product.discontinued" (click)="selectProduct(product)" [title]="product | json">
     <span class="name">{{ product.name | uppercase }}</span>
     <span class="description">{{ product.description }}</span>

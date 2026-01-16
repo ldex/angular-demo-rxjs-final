@@ -2,14 +2,13 @@ import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Product } from '../../models/product';
 import { AsyncPipe, CurrencyPipe, JsonPipe, SlicePipe, UpperCasePipe } from '@angular/common';
 import { ProductService } from '../product-service';
-import { OrderByPipe } from '../orderBy.pipe';
 import { Router, RouterLink } from '@angular/router';
 import { Observable, EMPTY, combineLatest, Subscription, tap, catchError, startWith, count, map, debounceTime, filter } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
-  imports: [UpperCasePipe, CurrencyPipe, OrderByPipe, JsonPipe, SlicePipe, AsyncPipe, RouterLink],
+  imports: [UpperCasePipe, CurrencyPipe, JsonPipe, SlicePipe, AsyncPipe, RouterLink],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
